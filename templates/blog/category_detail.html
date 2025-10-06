@@ -1,0 +1,24 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<h2>{{ object.name }}</h2>
+<div class="mb-3">
+  {% if user.is_authenticated %}
+    <a class="btn btn-sm btn-outline-primary" href="{% url 'blog:category_update' slug=object.slug %}">Редактировать</a>
+    <a class="btn btn-sm btn-outline-danger" href="{% url 'blog:category_delete' slug=object.slug %}">Удалить</a>
+  {% endif %}
+</div>
+<div class="row g-3">
+  {% for post in object.posts.all %}
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5><a href="{{ post.get_absolute_url }}" class="text-decoration-none">{{ post.title }}</a></h5>
+          <p class="small text-muted">{{ post.created_at|date:"d M Y" }} • {{ post.author }}</p>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>Постов в этой категории пока нет.</p>
+  {% endfor %}
+</div>
+{% endblock %}
